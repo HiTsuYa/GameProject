@@ -25,35 +25,37 @@ namespace Tetris
         public static ConsoleKeyInfo key;
         public static bool isKeyPressed = false;
         public static int linesCleared = 0, score = 0, level = 1;
-      
+
         static void Main()
-        {    
+        {
             drawBorder();
-            Console.SetCursorPosition(4, 5);
-            Console.WriteLine("Press any key");
-            Console.ReadKey(true);
+            GameStart();
             dropTimer.Start();
-            Console.SetCursorPosition(25, 0);
-            Console.WriteLine("Level " + level);
-            Console.SetCursorPosition(25, 1);
-            Console.WriteLine("Score " + score);
-            Console.SetCursorPosition(25, 2);
-            Console.WriteLine("LinesCleared " + linesCleared);
+            ShowInfos();
             nexttet = new Tetrominoe();
             tet = nexttet;
             tet.Spawn();
             nexttet = new Tetrominoe();
             Update();
+            PromptStart();
+
+        }
+        private static void GameStart()
+        {
+            Console.SetCursorPosition(4, 5);
+            Console.WriteLine("Press any key");
+            Console.ReadKey(true);
+        }
+        private static void PromptStart()
+        {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Game Over \n Replay? (Y/N)");
             string input = Console.ReadLine();
-
             if (input == "y" || input == "Y")
             {
                 int[,] grid = new int[23, 10];
                 droppedtetrominoeLocationGrid = new int[23, 10];
                 dropTimer = new Stopwatch();
-
                 dropRate = 300;
                 isDropped = false;
                 isKeyPressed = false;
@@ -65,7 +67,15 @@ namespace Tetris
                 Main();
             }
             else return;
-
+        }
+        private static void ShowInfos()
+        {
+            Console.SetCursorPosition(25, 0);
+            Console.WriteLine("Level " + level);
+            Console.SetCursorPosition(25, 1);
+            Console.WriteLine("Score " + score);
+            Console.SetCursorPosition(25, 2);
+            Console.WriteLine("LinesCleared " + linesCleared);
         }
 
         private static void fillGrid()
@@ -173,14 +183,14 @@ namespace Tetris
             else if (linesCleared < 150) level = 10;
 
 
-            if (combo>0)
+            if (combo > 0)
             {
                 Console.SetCursorPosition(25, 0);
                 Console.WriteLine("Level " + level);
                 Console.SetCursorPosition(25, 1);
                 Console.WriteLine("Score " + score);
                 Console.SetCursorPosition(25, 2);
-                Console.WriteLine("LinesCleared " + linesCleared); 
+                Console.WriteLine("LinesCleared " + linesCleared);
             }
 
             dropRate = 300 - 22 * level;
@@ -219,7 +229,7 @@ namespace Tetris
             }
             if (Program.key.Key == ConsoleKey.UpArrow & isKeyPressed)
             {
-                for (; tet.isSomethingBelow()!=true; )
+                for (; tet.isSomethingBelow() != true; )
                 {
                     tet.Drop();
                 }
@@ -295,7 +305,7 @@ namespace Tetris
             {
                 for (int j = 3; j < 10; j++)
                 {
-                    Console.SetCursorPosition(i,j);
+                    Console.SetCursorPosition(i, j);
                     Console.Write("  ");
                 }
 
@@ -307,7 +317,7 @@ namespace Tetris
                 {
                     if (shape[i, j] == 1)
                     {
-                        Console.SetCursorPosition(((10 - shape.GetLength(1)) / 2 + j)*2+20, i+5);
+                        Console.SetCursorPosition(((10 - shape.GetLength(1)) / 2 + j) * 2 + 20, i + 5);
                         Console.Write(Program.sqr);
                     }
                 }
